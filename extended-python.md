@@ -7,43 +7,48 @@
 * Package manager ```pip``` can be used to install packages:
 
 ```shell
+# Install the "pwntools" library using pip
 pip install pwntools
 
-# View Installed Libraries
+# List all installed Python packages along with their versions
 pip list
 
-# View Libraries and Version
+# Display installed packages in a format suitable for generating requirements.txt
 pip freeze
 
-# Install from requirements.txt
+# Install Python packages listed in the requirements.txt file
 pip install -r requirements.txt
 ```
 
 * A virtual environment enables in creation of an isolated Python environment, independent of other environments and installed packages; this allows us to use multiple dependencies & versions.
 
 ```shell
+# Install the virtualenv package using pip
 pip install virtualenv
 
+# Create a directory named 'virtual-demo'
 mkdir virtual-demo
 
+# Move into the 'virtual-demo' directory
 cd virtual-demo
 
-# Start Virtual Environment
+# Create a virtual environment named 'env' using Python 3
 python3 -m venv env
 
-# Activate Virtual Environment (prompt includes 'env' now)
+# Activate the virtual environment (the prompt should include 'env' now)
 source env/bin/activate
+
+# Start Python interpreter within the activated virtual environment
 python3
 
-# In Virtual Environment, Check Python Used (different from /usr/bin/python3)
+# In the virtual environment, check the Python executable being used (it should be different from /usr/bin/python3)
 which python3
 
-# Install Package in Virtual Environment
+# Install the pwntools package within the virtual environment
 pip install pwntools
 
-# Deactivate Virtual Environment
+# Deactivate the virtual environment
 deactivate
-
 ```
 
 ## SYS
@@ -52,50 +57,48 @@ deactivate
 import sys
 import time
 
-# Version of Python Interpreter
+# Print the version of the Python interpreter
 print(sys.version)
 
-# View Python Binary Used
+# Print the path to the Python binary used
 print(sys.executable)
 
-# Linux
+# Print the platform information (e.g., Linux)
 print(sys.platform)
 
-# Takes Input and Prints It Until "exit"
+# Takes input from the user and prints it until "exit" is entered
 for line in sys.stdin:
-  if line.strip() == "exit":
-    break
-  sys.stdout.write(">> {}".format(line))
+    if line.strip() == "exit":
+        break
+    sys.stdout.write(">> {}".format(line))
 
+# Print numbers 1 to 4
+for i in range(1, 5):
+    sys.stdout.write(str(i))
+    sys.stdout.flush()  # Clears the internal buffer of the file
 
-for i in range(1,5):
-  sys.stdout.write(str(i))
-  sys.stdout.flush() # Clears Internal Buffer of File
-
-# Simulate Progress Bar
-for i in range(0,51):
-  time.sleep(0)
-  sys.stdout.write("{} [{}{}]\r".format(i, '#'*i, "."*(50 - i)))
-  sys.stdout.flush()
+# Simulate a progress bar
+for i in range(0, 51):
+    time.sleep(0)
+    sys.stdout.write("{} [{}{}]\r".format(i, '#' * i, "." * (50 - i)))
+    sys.stdout.flush()
 sys.stdout.write("\n")
 
-# List Arguments Supplied to Script (first name will always be name of script)
+# List the arguments supplied to the script (the first name will always be the name of the script itself)
 print(sys.argv)
 
+# Check if the correct number of arguments is supplied to the script
 if len(sys.argv) != 3:
-  print("[X] To run {} enter username and password".format(sys.argv[0]))
-  sys.exit(5) # Exit with Particular Exit Code
+    print("[X] To run {}, enter username and password".format(sys.argv[0]))
+    sys.exit(5)  # Exit with a particular exit code
 
-username = sys.argv[1]
-password = sys.argv[2]
-
-# Access Path for Modules
+# Access the path for modules
 print(sys.path)
 
-# List of Modules
+# List of modules
 print(sys.modules)
 
-# Exit with Particular Exit Code
+# Exit with a particular exit code
 sys.exit(0)
 ```
 
@@ -104,88 +107,93 @@ sys.exit(0)
 ```python
 import requests
 
-# Make GET Request
+# Make a GET Request to http://httpbin.org/get and store the response in variable x
 x = requests.get('http://httpbin.org/get')
 
-# Take a look at the Headers
+# Print the response headers
 print(x.headers)
 
-# Look at Server Header
+# Print the value of the Server header from the response
 print(x.headers['Server'])
 
-# Look at Status Code
+# Print the HTTP status code of the response
 print(x.status_code)
-if x.status_code == 200:
-  print("Success!")
-elif x.status_code ==404:
-  print("Not Found!")
 
-# Time elapsed
+# Print a success message if the status code is 200; otherwise, print a not found message if it's 404
+if x.status_code == 200:
+    print("Success!")
+elif x.status_code == 404:
+    print("Not Found!")
+
+# Print the time elapsed for the request
 print(x.elapsed)
+
+# Print the cookies received in the response
 print(x.cookies)
 
-# In Bytes
+# Print the response content in bytes
 print(x.content)
 
-# In Unicode
+# Print the response content in Unicode
 print(x.text)
 
-# Create a Request with Parameters
-x = requests.get('http://httpbin.org/get', params={'id':'1'})
+# Make a GET Request to http://httpbin.org/get with parameters and print the URL
+x = requests.get('http://httpbin.org/get', params={'id': '1'})
 print(x.url)
 
-# Specify Parameters in the Request
-x = requests.get('httpL//httpbin.org/get?id=2')
+# Make a GET Request to http://httpbin.org/get with parameters specified in the URL and print the URL
+x = requests.get('http://httpbin.org/get?id=2')
 print(x.url)
 
-# Print Response in JSON Format
-x = requests.get('http://httpbin.org/get', params={'id':'3'}, headers={'Accept':'application/json', 'test_header':'test'})
+# Make a GET Request to http://httpbin.org/get with parameters and headers in JSON format, and print the response
+x = requests.get('http://httpbin.org/get', params={'id': '3'}, headers={'Accept': 'application/json', 'test_header': 'test'})
 print(x.text)
 
-# Delete Request
+# Make a DELETE Request to http://httpbin.org/delete and print the response
 x = requests.delete('http://httpbin.org/delete')
 print(x.text)
 
-# POST Request
-x = requests.post('http://httpbin.org/post', data={'a':'b', 'c':'d', 'e':'f'})
+# Make a POST Request to http://httpbin.org/post with form data and print the response
+x = requests.post('http://httpbin.org/post', data={'a': 'b', 'c': 'd', 'e': 'f'})
 print(x.text)
 
-# POST Request to Upload File
+# Make a POST Request to http://httpbin.org/post to upload a file and print the response
 files = {'file': open('google.jpg', 'rb')}
 x = requests.post('http://httpbin.org/post', files=files)
 print(x.text)
 
-# Handle Basic Authorization
-x = requests.get('http://httpbin.org/get', auth=('username','password'))
+# Make a GET Request to http://httpbin.org/get with basic authentication and print the response
+x = requests.get('http://httpbin.org/get', auth=('username', 'password'))
 print(x.text)
 
-# Gives SSL Error Unless 'verify=False'
+# Make a GET Request to a URL with an expired SSL certificate, ignoring SSL verification errors
 x = requests.get('https://expired.badssl.com', verify=False)
 
-# Prevent Redirects by Specifying 'allow_redirects=False'
+# Make a GET Request to http://github.com without allowing redirects and print the response headers
 x = requests.get('http://github.com', allow_redirects=False)
 print(x.headers)
 
-# Specify Timeout to Stop Waiting for a Response
-x = requests.get('http://httpbin.org/get'. timeout=0.01)
+# Make a GET Request to http://httpbin.org/get with a timeout of 0.01 seconds and print the response content
+x = requests.get('http://httpbin.org/get', timeout=0.01)
 print(x.content)
 
-# Sessions and Cookies
-x = requests.get('http://httpbin.org/cookies', cookies={'a':'b'})
+# Make a GET Request to http://httpbin.org/cookies with specified cookies and print the response content
+x = requests.get('http://httpbin.org/cookies', cookies={'a': 'b'})
 print(x.content)
 
+# Use a session to persist cookies across requests and print the response content
 x = requests.Session()
-x.cookies.update({'a':'b'})
+x.cookies.update({'a': 'b'})
 print(x.get('http://httpbin.org/cookies').text)
 
-# Pass JSON responses as JSON
+# Make a GET Request to https://api.github.com/events and print the response content in JSON format
 x = requests.get('https://api.github.com/events')
 print(x.json())
 
-# Get Images as a Response
+# Make a GET Request to download an image and save it as 'google2.png'
 x = requests.get('https://www.google.com/images/googlelogo.png')
 with open('google2.png', 'wb') as f:
-  f.write(x.content)
+    f.write(x.content)
 ```
 
 ## pwntools
@@ -193,52 +201,60 @@ with open('google2.png', 'wb') as f:
 ```python
 from pwn import *
 
-# Example Functions for Buffer Overflow
+# Generate a cyclic pattern of 50 characters
 print(cyclic(50))
+
+# Find the offset of the cyclic pattern where "laaa" starts
 print(cyclic_find("laaa"))
 
-# Work with Shell Code or Assembly
+# Generate shellcode for spawning a shell
 print(shellcraft.sh())
+
+# Disassemble shellcode and print hexdump
 print(hexdump(asm(shellcraft.sh())))
 
-# Start a Process
+# Start a new process for /bin/sh
 p = process("/bin/sh")
+# Send a command to the shell process
 p.sendline("echo hello;")
-# Interactive with Process
+# Interact with the process (allows interaction with the shell)
 p.interactive()
 
-# Interact with Remote Process
+# Connect to a remote process
 r = remote("127.0.0.1", 1234)
+# Send a message to the remote process
 r.sendline("hello")
-r.interactive() #Interative Session
-r.close() # Close the Session
+# Enter interactive mode to interact with the remote process
+r.interactive()
+# Close the connection to the remote process
+r.close()
 
-# Packing and Unpacking Numbers - Useful for Exploits and Passing Data Over the Network
-print(p32(0x13371337)) #Pack
-print(hex(u32(p32(0x13371337)))) #Unpack
+# Pack and unpack numbers for binary data manipulation
+print(p32(0x13371337)) # Pack
+print(hex(u32(p32(0x13371337)))) # Unpack
 
-# Load Files
+# Load binary files for analysis
 l = ELF('/bin/bash')
 print(hex(l.address)) # Base Address 
 print(hex(l.entry)) # Entry Point
 print(hex(l.got['write']))
 print(hex(l.plt['write']))
 
-# Jump Somewhere Specific in the Binary
+# Search for specific strings or instructions within the binary
 for address in l.search(b'/bin/sh\x00'):
-  print(hex(address))
+    print(hex(address))
 
-# Search One Specific Address
+# Search for a specific instruction (e.g., jmp esp)
 print(hex(next(l.search(asm('jmp esp')))))
 
-# Encoding and Hashing
+# Perform encoding and hashing operations
 print(xor("A", "B")) # XOR
 print(b64e(b"test")) # Base64 Encoding
 print(b64e(b"dGVxdA==")) # Base64 Decoding
 print(md5sumhex(b"hello")) # MD5
 print(sha1sumhex(b"hello")) # SHA1
 
-# Low Level Functions
+# Low-level bit manipulation functions
 bits = print(bits(b'a')) # Bits for 'a'
 unbits = print(unbits(bits)) # Unbits for 'a'
 ```
